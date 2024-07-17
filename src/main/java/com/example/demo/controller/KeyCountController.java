@@ -7,11 +7,18 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +31,15 @@ public class KeyCountController {
     @RequestMapping("/hello")
     public String hello() {
         return "hello";
+    }
+
+    @PostMapping("/receive-backup-file")
+    public String receiveBackupFile(HttpServletRequest request) throws IOException {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+        for (MultipartFile multipartFile : files) {
+            FileUtil.writeBytes(multipartFile.getBytes(), "/data/backup/" + multipartFile.getOriginalFilename());
+        }
+        return "success";
     }
 
     /**
@@ -50,7 +66,7 @@ public class KeyCountController {
     public String txtToHtml(@RequestParam("filePath") String filePath) {
         File[] ls = FileUtil.ls(filePath);
         for (File file : ls) {
-            if(FileUtil.extName(file).equals("txt")) {
+            if (FileUtil.extName(file).equals("txt")) {
                 FileUtil.rename(file, file.getName().replace(".txt", ".html"), true);
             }
         }
@@ -67,9 +83,9 @@ public class KeyCountController {
     @RequestMapping("/searchKey")
     public String searchKey(@RequestParam("filePath") String filePath, @RequestParam("key") String key,
                             @RequestParam(value = "industry", required = false) String industry) {
-        String resultFilePath = "/data/searchFile_"+ key + ".txt";
+        String resultFilePath = "/data/searchFile_" + key + ".txt";
         File file = new File(resultFilePath);
-        if(file.exists()) {
+        if (file.exists()) {
             return "文件已存在";
         }
         FileUtil.touch(resultFilePath);
@@ -105,18 +121,18 @@ public class KeyCountController {
         if (file.isDirectory()) {
             log.info("======================当前搜索目录：{}======================", file.getPath());
             File[] files = file.listFiles();
-            if(files == null) return;
+            if (files == null) return;
             // 查询文件夹名称是否有等于directoryName的
             boolean flag = false;
             for (File file1 : files) {
-                if(!StringUtils.hasLength(directoryName)) break;
+                if (!StringUtils.hasLength(directoryName)) break;
                 if (file1.getName().equals(directoryName)) {
                     flag = true;
                 }
             }
-            if(StringUtils.hasLength(directoryName) && flag) {
+            if (StringUtils.hasLength(directoryName) && flag) {
                 for (File file1 : files) {
-                    if(file1.getName().equals(directoryName)) {
+                    if (file1.getName().equals(directoryName)) {
                         getTxtFile(file1, allPath, directoryName);
                     }
                 }
