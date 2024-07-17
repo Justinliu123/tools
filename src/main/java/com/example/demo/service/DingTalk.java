@@ -31,7 +31,7 @@ public class DingTalk {
         DingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/v2/user/getbymobile");
         OapiV2UserGetbymobileRequest req = new OapiV2UserGetbymobileRequest();
         req.setMobile(phone);
-        OapiGettokenResponse oapiGettokenResponse =getToken(appKey,appSecret);
+        OapiGettokenResponse oapiGettokenResponse = getToken(appKey,appSecret);
         String accessToken = oapiGettokenResponse.getAccessToken();
         try {
             OapiV2UserGetbymobileResponse rsp = client.execute(req, accessToken);

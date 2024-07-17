@@ -15,8 +15,8 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/windows", subprotocols = "guacamole")
-@Component
+//@ServerEndpoint(value = "/windows", subprotocols = "guacamole")
+//@Component
 public class WebSocketTunnel extends GuacamoleWebSocketTunnelEndpoint {
     private static String guacIp = "172.17.24.235";
     private static Integer guacPort = 4822;

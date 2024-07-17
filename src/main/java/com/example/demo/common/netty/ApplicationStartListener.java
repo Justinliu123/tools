@@ -13,7 +13,7 @@ import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+//@Component
 public class ApplicationStartListener implements ApplicationRunner {
 
     @Autowired

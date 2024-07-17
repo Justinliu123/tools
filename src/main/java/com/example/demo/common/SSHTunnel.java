@@ -14,8 +14,8 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/ssh", subprotocols = "guacamole")
-@Component
+//@ServerEndpoint(value = "/ssh", subprotocols = "guacamole")
+//@Component
 public class SSHTunnel extends GuacamoleWebSocketTunnelEndpoint {
     private static String guacIp = "172.17.24.235";
     private static Integer guacPort = 4822;
