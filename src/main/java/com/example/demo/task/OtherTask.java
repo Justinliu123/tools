@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Slf4j
-@Component
+//@Component
 public class OtherTask {
     @Scheduled(cron = "0 0 6 * * ?")
     //@Scheduled(cron = "0/2 * * * * ?")

@@ -20,7 +20,7 @@ public class StaticKeys {
 
     public static String MENU_ACTIVE = "active ";//菜单高亮显示
 
-    public static String APP_PRO_FILE = "application.properties";//配置信息文件
+    public static String APP_PRO_FILE = "application.yml";//配置信息文件
 
     //session中存贮的验证码key
     public static final String SESSION_CODE = "valcode";

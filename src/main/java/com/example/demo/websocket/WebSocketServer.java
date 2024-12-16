@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -19,9 +20,13 @@ import java.util.concurrent.Semaphore;
  *
  * @author ruoyi
  */
-@Component
+//@Component
 @ServerEndpoint(value = "/websocket/message/{token}/{systemIp}/{seamIp}", encoders = {ServerEncoder.class})
 public class WebSocketServer {
+    @PostConstruct
+    public void init() {
+        LOGGER.info("WebSocketServer initialization completed");
+    }
     /**
      * WebSocketServer 日志控制器
      */
