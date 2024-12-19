@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HdEquipmenttreeMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.HdEquipmenttree">
+            <id property="id" column="Id" jdbcType="BIGINT"/>
+            <result property="fanid" column="FanId" jdbcType="VARCHAR"/>
+            <result property="equipmentcode" column="EquipmentCode" jdbcType="VARCHAR"/>
+            <result property="equipmentname" column="EquipmentName" jdbcType="VARCHAR"/>
+            <result property="remarks" column="Remarks" jdbcType="VARCHAR"/>
+            <result property="sequence" column="Sequence" jdbcType="INTEGER"/>
+            <result property="telecommunicationstate" column="TelecommunicationState" jdbcType="VARCHAR"/>
+            <result property="telecontrolstate" column="TelecontrolState" jdbcType="VARCHAR"/>
+            <result property="createusercode" column="CreateUserCode" jdbcType="VARCHAR"/>
+            <result property="createtime" column="CreateTime" jdbcType="TIMESTAMP"/>
+            <result property="modifyusercode" column="ModifyUserCode" jdbcType="VARCHAR"/>
+            <result property="modifytime" column="ModifyTime" jdbcType="TIMESTAMP"/>
+            <result property="glid" column="GlId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,FanId,EquipmentCode,
+        EquipmentName,Remarks,Sequence,
+        TelecommunicationState,TelecontrolState,CreateUserCode,
+        CreateTime,ModifyUserCode,ModifyTime,
+        GlId
+    </sql>
+</mapper>

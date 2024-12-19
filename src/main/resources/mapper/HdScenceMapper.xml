@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HdScenceMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.HdScence">
+            <id property="id" column="Id" jdbcType="BIGINT"/>
+            <result property="capacity" column="capacity" jdbcType="VARCHAR"/>
+            <result property="fload" column="Fload" jdbcType="VARCHAR"/>
+            <result property="loadx" column="loadx" jdbcType="VARCHAR"/>
+            <result property="normalgeneratingnumber" column="Normalgeneratingnumber" jdbcType="VARCHAR"/>
+            <result property="generatingnumber" column="generatingnumber" jdbcType="VARCHAR"/>
+            <result property="stopnumber" column="Stopnumber" jdbcType="VARCHAR"/>
+            <result property="communicationstatus" column="Communicationstatus" jdbcType="VARCHAR"/>
+            <result property="windpattern" column="windpattern" jdbcType="VARCHAR"/>
+            <result property="rotordiameter" column="rotordiameter" jdbcType="VARCHAR"/>
+            <result property="boosterstationstatus" column="Boosterstationstatus" jdbcType="VARCHAR"/>
+            <result property="cable" column="cable" jdbcType="VARCHAR"/>
+            <result property="fantower" column="Fantower" jdbcType="VARCHAR"/>
+            <result property="fanunit" column="Fanunit" jdbcType="VARCHAR"/>
+            <result property="power" column="POWER" jdbcType="VARCHAR"/>
+            <result property="ambienthumidity" column="AmbientHumidity" jdbcType="VARCHAR"/>
+            <result property="windSpeed" column="WIND_SPEED" jdbcType="VARCHAR"/>
+            <result property="airdensity" column="AirDensity" jdbcType="VARCHAR"/>
+            <result property="airpressure" column="AirPressure" jdbcType="VARCHAR"/>
+            <result property="winddirection" column="winddirection" jdbcType="VARCHAR"/>
+            <result property="winddirectionangle" column="WinddirectionAngle" jdbcType="VARCHAR"/>
+            <result property="installedcapacity" column="installedcapacity" jdbcType="VARCHAR"/>
+            <result property="generatingcapacity" column="Generatingcapacity" jdbcType="VARCHAR"/>
+            <result property="activepower" column="activepower" jdbcType="VARCHAR"/>
+            <result property="reactivepower" column="reactivepower" jdbcType="VARCHAR"/>
+            <result property="createusercode" column="CreateUserCode" jdbcType="VARCHAR"/>
+            <result property="createtime" column="CreateTime" jdbcType="TIMESTAMP"/>
+            <result property="modifyusercode" column="ModifyUserCode" jdbcType="VARCHAR"/>
+            <result property="modifytime" column="ModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,capacity,Fload,
+        loadx,Normalgeneratingnumber,generatingnumber,
+        Stopnumber,Communicationstatus,windpattern,
+        rotordiameter,Boosterstationstatus,cable,
+        Fantower,Fanunit,POWER,
+        AmbientHumidity,WIND_SPEED,AirDensity,
+        AirPressure,winddirection,WinddirectionAngle,
+        installedcapacity,Generatingcapacity,activepower,
+        reactivepower,CreateUserCode,CreateTime,
+        ModifyUserCode,ModifyTime
+    </sql>
+</mapper>

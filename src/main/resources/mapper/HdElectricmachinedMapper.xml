@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.HdElectricmachinedMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.HdElectricmachined">
+            <id property="id" column="Id" jdbcType="BIGINT"/>
+            <result property="equipmentpartscode" column="EquipmentPartsCode" jdbcType="VARCHAR"/>
+            <result property="equipmappingen" column="EquipMappingEN" jdbcType="VARCHAR"/>
+            <result property="simulationdata" column="SimulationData" jdbcType="VARCHAR"/>
+            <result property="historydata" column="HistoryData" jdbcType="VARCHAR"/>
+            <result property="createusercode" column="CreateUserCode" jdbcType="VARCHAR"/>
+            <result property="createtime" column="CreateTime" jdbcType="TIMESTAMP"/>
+            <result property="modifyusercode" column="ModifyUserCode" jdbcType="VARCHAR"/>
+            <result property="modifytime" column="ModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,EquipmentPartsCode,EquipMappingEN,
+        SimulationData,HistoryData,CreateUserCode,
+        CreateTime,ModifyUserCode,ModifyTime
+    </sql>
+</mapper>

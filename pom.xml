@@ -79,6 +79,17 @@
             <artifactId>spring-integration-mqtt</artifactId>
             <version>5.3.2.RELEASE</version>
         </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.3.1</version>
+        </dependency>
     </dependencies>
 
     <build>

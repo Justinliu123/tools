@@ -2,6 +2,7 @@ package com.example.demo.mqtt;
 
 import javax.annotation.PostConstruct;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -9,6 +10,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+@Slf4j
 @Configuration
 public class MqttConsumerConfig {
     @Value("${spring.mqtt.username}")
@@ -44,6 +46,7 @@ public class MqttConsumerConfig {
      */
     public void connect() {
         try {
+            log.info("MQTT连接hostUrl:{}, clientId:{}", hostUrl, clientId);
             //创建MQTT客户端对象
             client = new MqttClient(hostUrl, clientId, new MemoryPersistence());
             //连接设置
@@ -65,12 +68,10 @@ public class MqttConsumerConfig {
             //设置回调
             client.setCallback(new MqttConsumerCallBack());
             //订阅主题
-            //消息等级，和主题数组一一对应，服务端将按照指定等级给订阅了主题的客户端推送消息
-            int[] qos = {0, 0};
-            //主题
-            String[] topics = {"topic1", "topic2"};
-            //订阅主题
-            client.subscribe(topics, qos);
+            client.subscribe(MqttConstant.topics, MqttConstant.qos);
+            client.subscribe(MqttConstant.gfTopics, MqttConstant.gfQos);
+            client.subscribe(MqttConstant.hdTopics, MqttConstant.hdQos);
+            log.info("MQTT客户端连接成功");
         } catch (MqttException e) {
             e.printStackTrace();
         }

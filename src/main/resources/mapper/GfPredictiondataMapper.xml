@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.GfPredictiondataMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.GfPredictiondata">
+            <id property="id" column="Id" jdbcType="INTEGER"/>
+            <result property="shorttermpredictedpower" column="ShortTermPredictedPower" jdbcType="VARCHAR"/>
+            <result property="ultrashorttermpredictedpower" column="UltraShortTermPredictedPower" jdbcType="VARCHAR"/>
+            <result property="actualwindspeed" column="ActualWindSpeed" jdbcType="VARCHAR"/>
+            <result property="shorttermpredictedwindspeed" column="ShortTermPredictedWindSpeed" jdbcType="VARCHAR"/>
+            <result property="ultrashorttermpredictedwindspeed" column="UltraShortTermPredictedWindSpeed" jdbcType="VARCHAR"/>
+            <result property="anemometerwindspeed" column="AnemometerWindSpeed" jdbcType="VARCHAR"/>
+            <result property="createusercode" column="CreateUserCode" jdbcType="VARCHAR"/>
+            <result property="createtime" column="CreateTime" jdbcType="TIMESTAMP"/>
+            <result property="modifyusercode" column="ModifyUserCode" jdbcType="VARCHAR"/>
+            <result property="modifytime" column="ModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        Id,ShortTermPredictedPower,UltraShortTermPredictedPower,
+        ActualWindSpeed,ShortTermPredictedWindSpeed,UltraShortTermPredictedWindSpeed,
+        AnemometerWindSpeed,CreateUserCode,CreateTime,
+        ModifyUserCode,ModifyTime
+    </sql>
+</mapper>
