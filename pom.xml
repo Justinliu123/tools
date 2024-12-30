@@ -79,6 +79,17 @@
             <artifactId>spring-integration-mqtt</artifactId>
             <version>5.3.2.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.9</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.17</version>
+        </dependency>
     </dependencies>
 
     <build>
