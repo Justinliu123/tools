@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.SisUpgradeVoltageTransformerData2Mapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.SisUpgradeVoltageTransformerData2">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="boostTransformerInputVoltage" column="boost_transformer_input_voltage" jdbcType="VARCHAR"/>
+            <result property="boostTransformerOutputVoltage" column="boost_transformer_output_voltage" jdbcType="VARCHAR"/>
+            <result property="boostTransformerOutputCurrent" column="boost_transformer_output_current" jdbcType="VARCHAR"/>
+            <result property="boostTransformerOutputPower" column="boost_transformer_output_power" jdbcType="VARCHAR"/>
+            <result property="transmissionLineVoltage" column="transmission_line_voltage" jdbcType="VARCHAR"/>
+            <result property="transmissionLineCurrent" column="transmission_line_current" jdbcType="VARCHAR"/>
+            <result property="transmissionLinePower" column="transmission_line_power" jdbcType="VARCHAR"/>
+            <result property="stepDownTransformerInputVoltage" column="step-down_transformer_input_voltage" jdbcType="VARCHAR"/>
+            <result property="stepDownTransformerOutputVoltage" column="step-down_transformer_output_voltage" jdbcType="VARCHAR"/>
+            <result property="stepDownTransformerOutputCurrent" column="step-down_transformer_output_current" jdbcType="VARCHAR"/>
+            <result property="stepDownTransformerOutputPower" column="step-down_transformer_output_power" jdbcType="VARCHAR"/>
+            <result property="transmissionLineEfficiency" column="transmission_line_efficiency" jdbcType="VARCHAR"/>
+            <result property="transmissionLineConnectionStatus" column="transmission_line_connection_status" jdbcType="VARCHAR"/>
+            <result property="transmissionLineOperatingTemperature" column="transmission_line_operating_temperature" jdbcType="VARCHAR"/>
+            <result property="transmissionLineConnectionHealthStatus" column="transmission_line_connection_health_status" jdbcType="VARCHAR"/>
+            <result property="networkOutputPowerAllocation" column="network_output_power_allocation" jdbcType="VARCHAR"/>
+            <result property="powerAtNetworkConnectionPoints" column="power_at_network_connection_points" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,boost_transformer_input_voltage,boost_transformer_output_voltage,
+        boost_transformer_output_current,boost_transformer_output_power,transmission_line_voltage,
+        transmission_line_current,transmission_line_power,step-down_transformer_input_voltage,
+        step-down_transformer_output_voltage,step-down_transformer_output_current,step-down_transformer_output_power,
+        transmission_line_efficiency,transmission_line_connection_status,transmission_line_operating_temperature,
+        transmission_line_connection_health_status,network_output_power_allocation,power_at_network_connection_points
+    </sql>
+</mapper>

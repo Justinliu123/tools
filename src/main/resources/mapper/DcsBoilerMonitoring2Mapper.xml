@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DcsBoilerMonitoring2Mapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.DcsBoilerMonitoring2">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="boilerOutletTemperature" column="boiler_outlet_temperature" jdbcType="VARCHAR"/>
+            <result property="boilerOutletPressure" column="boiler_outlet_pressure" jdbcType="VARCHAR"/>
+            <result property="enthalpyAtBoilerOutlet" column="enthalpy_at_boiler_outlet" jdbcType="VARCHAR"/>
+            <result property="theRightSideOfTheBoiler" column="the_right_side_of_the_boiler" jdbcType="VARCHAR"/>
+            <result property="theLeftSideOfTheBoiler" column="the_left_side_of_the_boiler" jdbcType="VARCHAR"/>
+            <result property="waterLevelInBoilerStorageTank" column="water_level_in_boiler_storage_tank" jdbcType="VARCHAR"/>
+            <result property="airFlowRateAtBoilerInlet" column="air_flow_rate_at_boiler_inlet" jdbcType="VARCHAR"/>
+            <result property="airPressureAtBoilerInlet" column="air_pressure_at_boiler_inlet" jdbcType="VARCHAR"/>
+            <result property="averageOxygenContentBoilerCombustion" column="average_oxygen_content_boiler_combustion" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,boiler_outlet_temperature,boiler_outlet_pressure,
+        enthalpy_at_boiler_outlet,the_right_side_of_the_boiler,the_left_side_of_the_boiler,
+        water_level_in_boiler_storage_tank,air_flow_rate_at_boiler_inlet,air_pressure_at_boiler_inlet,
+        average_oxygen_content_boiler_combustion
+    </sql>
+</mapper>
