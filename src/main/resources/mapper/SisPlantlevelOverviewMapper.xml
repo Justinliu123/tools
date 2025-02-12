@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.SisPlantlevelOverviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.SisPlantlevelOverview">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="loads" column="loads" jdbcType="VARCHAR"/>
+            <result property="powerSupplyCoalConsumption" column="power_supply_coal_consumption" jdbcType="VARCHAR"/>
+            <result property="coalConsumptionForPowerGeneration" column="coal_consumption_for_power_generation" jdbcType="VARCHAR"/>
+            <result property="auxiliaryPowerRatio" column="auxiliary_power_ratio" jdbcType="VARCHAR"/>
+            <result property="boilerEfficiency" column="boiler_efficiency" jdbcType="VARCHAR"/>
+            <result property="steamTurbineHeatRate" column="steam_turbine_heat_rate" jdbcType="VARCHAR"/>
+            <result property="steamConsumptionRate" column="steam_consumption_rate" jdbcType="VARCHAR"/>
+            <result property="steamTurbineEfficiency" column="steam_turbine_efficiency" jdbcType="VARCHAR"/>
+            <result property="generatingUnitEfficiency" column="generating_unit_efficiency" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,loads,power_supply_coal_consumption,
+        coal_consumption_for_power_generation,auxiliary_power_ratio,boiler_efficiency,
+        steam_turbine_heat_rate,steam_consumption_rate,steam_turbine_efficiency,
+        generating_unit_efficiency
+    </sql>
+</mapper>

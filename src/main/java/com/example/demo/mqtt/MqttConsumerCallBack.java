@@ -1,6 +1,7 @@
 package com.example.demo.mqtt;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONReader;
 import com.example.demo.dao.*;
 import com.example.demo.po.*;
 import com.example.demo.util.SpringBeanUtil;
@@ -33,57 +34,42 @@ public class MqttConsumerCallBack implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         System.out.println(String.format("接收消息主题 : %s", topic));
         System.out.println(String.format("接收消息内容 : %s", new String(message.getPayload())));
-        if(topic.equals(MqttConstant.dataTopic)) {
-            ScenceDao scenceDao = SpringBeanUtil.getBean(ScenceDao.class);
-            ScencePo scencePo = JSONObject.parseObject(new String(message.getPayload()), ScencePo.class);
-            scenceDao.save(scencePo);
-        } else if (topic.equals(MqttConstant.predictionTopic)) {
-            PredictiondataDao predictiondataDao = SpringBeanUtil.getBean(PredictiondataDao.class);
-            PredictiondataPo predictiondataPo = JSONObject.parseObject(new String(message.getPayload()), PredictiondataPo.class);
-            predictiondataDao.save(predictiondataPo);
-        } else if (topic.equals(MqttConstant.equipmentTopic)) {
-            ElectricmachinedDao electricmachinedDao = SpringBeanUtil.getBean(ElectricmachinedDao.class);
-            ElectricmachinedPo electricmachinedPo = JSONObject.parseObject(new String(message.getPayload()), ElectricmachinedPo.class);
-            electricmachinedDao.save(electricmachinedPo);
-        } else if(topic.equals(MqttConstant.equipmentStatusTopic)) {
-            EquipmenttreeDao equipmenttreeDao = SpringBeanUtil.getBean(EquipmenttreeDao.class);
-            EquipmenttreePo equipmenttreePo = JSONObject.parseObject(new String(message.getPayload()), EquipmenttreePo.class);
-            equipmenttreeDao.save(equipmenttreePo);
-        } else if(topic.equals(MqttConstant.GfDataTopic)) {
-            GfScenceDao GfScenceDao = SpringBeanUtil.getBean(GfScenceDao.class);
-            GfScence gfScence = JSONObject.parseObject(new String(message.getPayload()), GfScence.class);
-            GfScenceDao.save(gfScence);
-            log.info("GfScence数据入库成功");
-        } else if(topic.equals(MqttConstant.GfPredictionTopic)) {
-            GfPredictiondataDao gfPredictiondataDao = SpringBeanUtil.getBean(GfPredictiondataDao.class);
-            GfPredictiondata gfPredictiondata = JSONObject.parseObject(new String(message.getPayload()), GfPredictiondata.class);
-            gfPredictiondataDao.save(gfPredictiondata);
-            log.info("GfPredictiondata数据入库成功");
-        } else if(topic.equals(MqttConstant.GfEquipmentTopic)) {
-            GfElectricmachinedDao gfElectricmachinedDao = SpringBeanUtil.getBean(GfElectricmachinedDao.class);
-            GfElectricmachined gfElectricmachined = JSONObject.parseObject(new String(message.getPayload()), GfElectricmachined.class);
-            gfElectricmachinedDao.save(gfElectricmachined);
-            log.info("GfElectricmachined数据入库成功");
-        } else if(topic.equals(MqttConstant.GfEquipmentStatusTopic)) {
-            GfEquipmenttreeDao gfEquipmenttreeDao = SpringBeanUtil.getBean(GfEquipmenttreeDao.class);
-            GfEquipmenttree gfEquipmenttree = JSONObject.parseObject(new String(message.getPayload()), GfEquipmenttree.class);
-            gfEquipmenttreeDao.save(gfEquipmenttree);
-            log.info("GfEquipmenttree数据入库成功");
-        } else if(topic.equals(MqttConstant.HdDataTopic)) {
-            HdScenceDao hdScenceDao = SpringBeanUtil.getBean(HdScenceDao.class);
-            HdScence hdScence = JSONObject.parseObject(new String(message.getPayload()), HdScence.class);
-            hdScenceDao.save(hdScence);
-            log.info("HdScence数据入库成功");
-        } else if(topic.equals(MqttConstant.HdEquipmentTopic)) {
-            HdElectricmachinedDao hdElectricmachinedDao = SpringBeanUtil.getBean(HdElectricmachinedDao.class);
-            HdElectricmachined hdElectricmachined = JSONObject.parseObject(new String(message.getPayload()), HdElectricmachined.class);
-            hdElectricmachinedDao.save(hdElectricmachined);
-            log.info("HdElectricmachined数据入库成功");
-        } else if(topic.equals(MqttConstant.HdEquipmentStatusTopic)) {
-            HdEquipmenttreeDao hdEquipmenttreeDao = SpringBeanUtil.getBean(HdEquipmenttreeDao.class);
-            HdEquipmenttree hdEquipmenttree = JSONObject.parseObject(new String(message.getPayload()), HdEquipmenttree.class);
-            hdEquipmenttreeDao.save(hdEquipmenttree);
-            log.info("HdEquipmenttree数据入库成功");
+        if (topic.equals(MqttConstant.topic1)) {
+            SisPlantlevelOverviewDao sisPlantlevelOverviewDao = SpringBeanUtil.getBean(SisPlantlevelOverviewDao.class);
+            SisPlantlevelOverview sisPlantlevelOverview = JSONObject.parseObject(new String(message.getPayload()), SisPlantlevelOverview.class,
+                    JSONReader.Feature.SupportSmartMatch);
+            sisPlantlevelOverviewDao.save(sisPlantlevelOverview);
+            log.info("SIS_plantlevel_overview 数据入库成功");
+        } else if (topic.equals(MqttConstant.topic2)) {
+            SisTurbineSystemDao sisTurbineSystemDao = SpringBeanUtil.getBean(SisTurbineSystemDao.class);
+            SisTurbineSystem sisTurbineSystem = JSONObject.parseObject(new String(message.getPayload()), SisTurbineSystem.class,
+                    JSONReader.Feature.SupportSmartMatch);
+            sisTurbineSystemDao.save(sisTurbineSystem);
+            log.info("SIS_turbine_system 数据入库成功");
+        } else if (topic.equals(MqttConstant.topic3)) {
+            SisUpgradeVoltageTransformerDataDao sisUpgradeVoltageTransformerDataDao = SpringBeanUtil.getBean(SisUpgradeVoltageTransformerDataDao.class);
+            SisUpgradeVoltageTransformerData sisUpgradeVoltageTransformerData = JSONObject.parseObject(new String(message.getPayload()),
+                    SisUpgradeVoltageTransformerData.class,
+                    JSONReader.Feature.SupportSmartMatch);
+            sisUpgradeVoltageTransformerDataDao.save(sisUpgradeVoltageTransformerData);
+            log.info("SIS_upgrade_voltage_transformer_data 数据入库成功");
+        } else if (topic.equals(MqttConstant.topic4)) {
+            DcsBoilerMonitoringDao dcsBoilerMonitoringDao = SpringBeanUtil.getBean(DcsBoilerMonitoringDao.class);
+            DcsBoilerMonitoring dcsBoilerMonitoring = JSONObject.parseObject(new String(message.getPayload()),
+                    DcsBoilerMonitoring.class, JSONReader.Feature.SupportSmartMatch);
+            dcsBoilerMonitoringDao.save(dcsBoilerMonitoring);
+            log.info("DCS_boiler_monitoring 数据入库成功");
+        } else if (topic.equals(MqttConstant.topic5)) {
+            DcsTurbineDataDao dcsTurbineDataDao = SpringBeanUtil.getBean(DcsTurbineDataDao.class);
+            DcsTurbineData dcsTurbineData = JSONObject.parseObject(new String(message.getPayload()), DcsTurbineData.class, JSONReader.Feature.SupportSmartMatch);
+            dcsTurbineDataDao.save(dcsTurbineData);
+            log.info("DCS_turbine_data 数据入库成功");
+        } else if (topic.equals(MqttConstant.topic6)) {
+            DcsMonitoringOfAuxiliaryTurbinesDao dcsMonitoringOfAuxiliaryTurbinesDao = SpringBeanUtil.getBean(DcsMonitoringOfAuxiliaryTurbinesDao.class);
+            DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines = JSONObject.parseObject(new String(message.getPayload()),
+                    DcsMonitoringOfAuxiliaryTurbines.class, JSONReader.Feature.SupportSmartMatch);
+            dcsMonitoringOfAuxiliaryTurbinesDao.save(dcsMonitoringOfAuxiliaryTurbines);
+            log.info("DCS_monitoring_of_auxiliary_turbines 数据入库成功");
         }
     }
 

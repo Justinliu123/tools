@@ -15,12 +15,16 @@ public class MqttConstant {
     static String HdDataTopic = "HD.Scence";
     static String HdEquipmentTopic = "HD.Electricmachined";
     static String HdEquipmentStatusTopic = "HD.Equipmenttree";
+
+    // 新系统
+    static String topic1 = "SIS_plantlevel_overview";
+    static String topic2 = "SIS_turbine_system";
+    static String topic3 = "SIS_upgrade_voltage_transformer_data";
+    static String topic4 = "DCS_boiler_monitoring";
+    static String topic5 = "DCS_turbine_data";
+    static String topic6 = "DCS_monitoring_of_auxiliary_turbines";
     //风电主题
-    static String[] topics = {dataTopic, predictionTopic, statusTopic, equipmentTopic, equipmentStatusTopic};
-    static String[] gfTopics = {GfDataTopic, GfPredictionTopic, GfEquipmentTopic, GfEquipmentStatusTopic};
-    static String[] hdTopics = {HdDataTopic, HdEquipmentTopic, HdEquipmentStatusTopic};
+    static String[] topics = {topic1, topic2, topic3, topic4, topic5, topic6};
     //消息等级，和主题数组一一对应，服务端将按照指定等级给订阅了主题的客户端推送消息
-    static int[] qos = {0, 0, 0, 0, 0};
-    static int[] gfQos = {0, 0, 0, 0};
-    static int[] hdQos = {0, 0, 0};
+    static int[] qos = {0, 0, 0, 0, 0, 0};
 }

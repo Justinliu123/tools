@@ -55,9 +55,9 @@ public class MqttConsumerConfig {
             //设置为true表示每次连接到服务端都是以新的身份
             options.setCleanSession(true);
             //设置连接用户名
-            options.setUserName(username);
+            options.setUserName("");
             //设置连接密码
-            options.setPassword(password.toCharArray());
+            options.setPassword(new char[]{});
             //设置超时时间，单位为秒
             options.setConnectionTimeout(100);
             //设置心跳时间 单位为秒，表示服务器每隔1.5*20秒的时间向客户端发送心跳判断客户端是否在线
@@ -69,8 +69,6 @@ public class MqttConsumerConfig {
             client.setCallback(new MqttConsumerCallBack());
             //订阅主题
             client.subscribe(MqttConstant.topics, MqttConstant.qos);
-            client.subscribe(MqttConstant.gfTopics, MqttConstant.gfQos);
-            client.subscribe(MqttConstant.hdTopics, MqttConstant.hdQos);
             log.info("MQTT客户端连接成功");
         } catch (MqttException e) {
             e.printStackTrace();

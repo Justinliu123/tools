@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DcsTurbineDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.DcsTurbineData">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="steamTurbineEfficiency" column="steam_turbine_efficiency" jdbcType="VARCHAR"/>
+            <result property="generatorD‑axisReactance" column="generator_d‑axis_reactance" jdbcType="VARCHAR"/>
+            <result property="generatorQ‑axisReactance" column="generator_q‑axis_reactance" jdbcType="VARCHAR"/>
+            <result property="generatorResistance" column="generator_resistance" jdbcType="VARCHAR"/>
+            <result property="generatorDampingCoefficient" column="generator_damping_coefficient" jdbcType="VARCHAR"/>
+            <result property="generatorMomentOfInertia" column="generator_moment_of_inertia" jdbcType="VARCHAR"/>
+            <result property="generatorD‑axisReferenceVoltage" column="generator_d‑axis_reference_voltage" jdbcType="VARCHAR"/>
+            <result property="generatorQ‑axisReferenceVoltage" column="generator_q‑axis_reference_voltage" jdbcType="VARCHAR"/>
+            <result property="steamTurbineStressValue" column="steam_turbine_stress_value" jdbcType="VARCHAR"/>
+            <result property="steamTurbineInletSteamTemperature" column="steam_turbine_inlet_steam_temperature" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,steam_turbine_efficiency,generator_d‑axis_reactance,
+        generator_q‑axis_reactance,generator_resistance,generator_damping_coefficient,
+        generator_moment_of_inertia,generator_d‑axis_reference_voltage,generator_q‑axis_reference_voltage,
+        steam_turbine_stress_value,steam_turbine_inlet_steam_temperature
+    </sql>
+</mapper>

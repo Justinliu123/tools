@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DcsMonitoringOfAuxiliaryTurbinesMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.po.DcsMonitoringOfAuxiliaryTurbines">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="pumpEfficiency" column="pump_efficiency" jdbcType="VARCHAR"/>
+            <result property="pumpInletPressure" column="pump_inlet_pressure" jdbcType="VARCHAR"/>
+            <result property="pumpOutletPressure" column="pump_outlet_pressure" jdbcType="VARCHAR"/>
+            <result property="noxConcentrationInFlueGas" column="nox_concentration_in_flue_gas" jdbcType="VARCHAR"/>
+            <result property="o2ConcentrationInFlueGas" column="o2_concentration_in_flue_gas" jdbcType="VARCHAR"/>
+            <result property="nh3ConcentrationInFlueGas" column="nh3_concentration_in_flue_gas" jdbcType="VARCHAR"/>
+            <result property="pressureHoldingStatusOfTheScrReactor" column="pressure_holding_status_of_the_scr_reactor" jdbcType="VARCHAR"/>
+            <result property="forcedDraftFanMotorCurrent" column="forced_draft_fan_motor_current" jdbcType="VARCHAR"/>
+            <result property="forcedDraftFanMotorPower" column="forced_draft_fan_motor_power" jdbcType="VARCHAR"/>
+            <result property="forcedDraftFanAirPressure" column="forced_draft_fan_air_pressure" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,pump_efficiency,pump_inlet_pressure,
+        pump_outlet_pressure,nox_concentration_in_flue_gas,o2_concentration_in_flue_gas,
+        nh3_concentration_in_flue_gas,pressure_holding_status_of_the_scr_reactor,forced_draft_fan_motor_current,
+        forced_draft_fan_motor_power,forced_draft_fan_air_pressure
+    </sql>
+</mapper>

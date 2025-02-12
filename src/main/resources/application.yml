@@ -7,17 +7,17 @@ spring:
       max-file-size: 1GB
       max-request-size: 1GB
   mqtt:
-    url: tcp://127.0.0.1:1883
-    username: admin
-    password: liu0929pan0.
+    url: tcp://172.16.24.111:1883
+    username:
+    password:
     client:
       id: consumer-1
     default:
       topic: topic
   datasource:
-    url: jdbc:mysql://localhost:3306/richtech?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://172.16.24.111:3306/application?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root
-    password: root
+    password: fengtaiSec.666
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
