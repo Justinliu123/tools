@@ -9,7 +9,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class MqttConsumerConfig {
     @Value("${spring.mqtt.username}")
     private String username;

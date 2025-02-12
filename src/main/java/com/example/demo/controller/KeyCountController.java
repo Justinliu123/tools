@@ -1,10 +1,17 @@
 package com.example.demo.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileNameUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.core.text.csv.CsvReader;
+import cn.hutool.core.text.csv.CsvUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ZipUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.dto.AnnouncementDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -33,11 +42,36 @@ public class KeyCountController {
         return "hello";
     }
 
+
     @PostMapping("/receive-backup-file")
     public String receiveBackupFile(HttpServletRequest request) throws IOException {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
         for (MultipartFile multipartFile : files) {
             FileUtil.writeBytes(multipartFile.getBytes(), "/data/backup/" + multipartFile.getOriginalFilename());
+        }
+        return "success";
+    }
+
+    /**
+     * 解压缩文件夹下的所有压缩文件。会保留zip名称
+     *
+     * @return {@link String }
+     */
+    @RequestMapping("/unZipFiles")
+    public String unZipFiles() {
+        String path = "D:\\tmp\\work";
+        String target = "D:\\tmp\\work\\unzip";
+        // 获取文件夹下的所有zip文件
+        List<File> files = FileUtil.loopFiles(path, file -> file.getName().endsWith(".zip"));
+        for (File file : files) {
+            String fileMainName = FileUtil.mainName(file);
+            try {
+                ZipUtil.unzip(file.getPath(), target + "/" + fileMainName);
+            } catch (Exception e) {
+                log.error("解压失败：" + fileMainName);
+                continue;
+            }
+            log.info("解压成功：" + fileMainName);
         }
         return "success";
     }
@@ -62,6 +96,12 @@ public class KeyCountController {
         return "success";
     }
 
+    /**
+     * 将文件夹下的txt转换为html
+     *
+     * @param filePath 文件路径
+     * @return {@link String }
+     */
     @RequestMapping("/txtToHtml")
     public String txtToHtml(@RequestParam("filePath") String filePath) {
         File[] ls = FileUtil.ls(filePath);
@@ -74,21 +114,24 @@ public class KeyCountController {
     }
 
     /**
-     * 查询文件夹下的所有txt文件，搜索关键字，搜索到的文件，将文件路径存储在 “/data/searchFile.txt” 文件中
+     * 查询文件夹下的所有txt文件，搜索关键字，搜索到的文件，将文件路径存储在 “/data/searchFile.csv” 文件中;
+     * 将搜索到的相关数据提取出来，保存在“/data/searchFile.csv中”
      *
-     * @param filePath 文件路径
      * @param key      钥匙
      * @return {@link String }
      */
     @RequestMapping("/searchKey")
-    public String searchKey(@RequestParam("filePath") String filePath, @RequestParam("key") String key,
+    public String searchKey(@RequestParam("key") String key,
                             @RequestParam(value = "industry", required = false) String industry) {
-        String resultFilePath = "/data/searchFile_" + key + ".txt";
+        String filePath = "D:\\tmp\\work\\unzip";
+        String resultFilePath = "/data/searchFile_" + key + ".csv";
+        // 写入标题
         File file = new File(resultFilePath);
         if (file.exists()) {
             return "文件已存在";
         }
         FileUtil.touch(resultFilePath);
+        FileUtil.appendUtf8String("项目标号,站点编号,公告名称,文件路径,公告发布时间,公告链接,所属城市\r\n", file);
         StringBuilder result = new StringBuilder();
 
         // 遍历filePath下的所有txt路径
@@ -97,7 +140,7 @@ public class KeyCountController {
 
         log.info("===============================共{}个文件需要对比", allPath.size());
 
-        // 遍历所有txt文件，搜索关键字，将搜索到的文件路径存储在result中
+        // 遍历所有txt文件，搜索关键字
         for (String path : allPath) {
             String fileContent = FileUtil.readUtf8String(path);
             fileContent = HtmlUtil.unescape(
@@ -106,9 +149,39 @@ public class KeyCountController {
                                     HtmlUtil.removeHtmlTag(fileContent, "style"))));
             if (fileContent.contains(key)) {
                 result.append(path).append("\r\n");
-                FileUtil.appendUtf8String(path, file);
-                FileUtil.appendUtf8String("\n", file);
                 log.info("================当前文档{}符合条件================", path);
+                // 在文件的上一级目录里面获取announcements.csv文件，并提取出相关数据，保存在resultFilePath 的csv中
+                String parent = FileUtil.getParent(path, 2);
+                File announcementsFile = new File(parent + "/announcements.csv");
+                if(!announcementsFile.exists()) {
+                    log.info("{}不存在", announcementsFile.getPath());
+                    continue;
+                }
+                CsvReader reader = CsvUtil.getReader();
+                List<AnnouncementDto> announcementDtos = reader.read(FileUtil.getReader(announcementsFile, CharsetUtil.UTF_8), AnnouncementDto.class);
+                Map<String, AnnouncementDto> numberAnnouncementMap = announcementDtos.stream()
+                        .collect(Collectors.toMap(AnnouncementDto::getItemNumber, Function.identity()));
+                String mainName = FileNameUtil.getPrefix(path);
+                AnnouncementDto announcementDto = numberAnnouncementMap.get(mainName);
+                if(announcementDto == null) {
+                    announcementDto = numberAnnouncementMap.get(mainName.substring(0, mainName.indexOf("_")));
+                }
+                // 写入相关信息到resultFilePath 的csv中
+                if (announcementDto != null) {
+                    StringBuilder csvString = new StringBuilder();
+                    csvString.append(announcementDto.getItemNumber()).append(",")
+                            .append(announcementDto.getAddressId()).append(",")
+                            .append(announcementDto.getAnnouncementName()).append(",")
+                            .append(path).append(",")
+                            .append(announcementDto.getPublishTime()).append(",")
+                            .append(announcementDto.getNoticeUrl()).append(",")
+                            .append(announcementDto.getCity()).append(",");
+                    csvString.append("\r\n");
+                    FileUtil.appendUtf8String(csvString.toString(), file);
+                    log.info("================当前文档{}写入一条数据: {}================", path, csvString.toString());
+                } else {
+                    log.error("announcements.csv中没有找到对应的公告:{}", path);
+                }
             }
             log.info("{}不符合条件=====", path);
         }
@@ -116,8 +189,32 @@ public class KeyCountController {
         return result.toString();
     }
 
-    // 递归获取路径下的所有txt文件
-    public void getTxtFile(File file, List<String> allPath, String directoryName) {
+    /**
+     * 获取txt文件；这是将每个zip单独解压的
+     *
+     * @param file     文件
+     * @param allPath  所有路径
+     * @param industry 行业
+     */
+    private void getTxtFile(File file, List<String> allPath, String industry) {
+        if (file.isDirectory()) {
+            // 获取文件夹下的所有文件夹，进入
+            File[] files = file.listFiles();
+            if (files == null) return;
+            for (File file1 : files) {
+                getTxtFileTogether(file1, allPath, industry);
+            }
+        }
+    }
+
+    /**
+     * 递归获取路径下的所有txt文件；这些txt，是将zip解压到一起的
+     *
+     * @param file          文件
+     * @param allPath       所有路径
+     * @param directoryName 目录名称
+     */
+    public void getTxtFileTogether(File file, List<String> allPath, String directoryName) {
         if (file.isDirectory()) {
             log.info("======================当前搜索目录：{}======================", file.getPath());
             File[] files = file.listFiles();
@@ -133,12 +230,12 @@ public class KeyCountController {
             if (StringUtils.hasLength(directoryName) && flag) {
                 for (File file1 : files) {
                     if (file1.getName().equals(directoryName)) {
-                        getTxtFile(file1, allPath, directoryName);
+                        getTxtFileTogether(file1, allPath, directoryName);
                     }
                 }
             } else {
                 for (File file1 : files) {
-                    getTxtFile(file1, allPath, directoryName);
+                    getTxtFileTogether(file1, allPath, directoryName);
                 }
             }
         } else {
