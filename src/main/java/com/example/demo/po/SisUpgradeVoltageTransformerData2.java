@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 
  * @TableName SIS_upgrade_voltage_transformer_data
  */
-@TableName(value ="SIS_upgrade_voltage_transformer_data")
+@TableName(value ="SIS_upgrade_voltage_transformer_data_2")
 @Data
 public class SisUpgradeVoltageTransformerData2 implements Serializable {
     /**

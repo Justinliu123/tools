@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 
  * @TableName DCS_boiler_monitoring
  */
-@TableName(value ="DCS_boiler_monitoring")
+@TableName(value ="DCS_boiler_monitoring_2")
 @Data
 public class DcsBoilerMonitoring2 implements Serializable {
     /**

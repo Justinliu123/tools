@@ -69,6 +69,7 @@ public class MqttConsumerConfig {
             client.setCallback(new MqttConsumerCallBack());
             //订阅主题
             client.subscribe(MqttConstant.topics, MqttConstant.qos);
+            client.subscribe(MqttConstant.topics2, MqttConstant.qos2);
             log.info("MQTT客户端连接成功");
         } catch (MqttException e) {
             e.printStackTrace();

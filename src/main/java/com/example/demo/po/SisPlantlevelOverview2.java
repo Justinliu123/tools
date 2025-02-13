@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 
  * @TableName SIS_plantlevel_overview
  */
-@TableName(value ="SIS_plantlevel_overview")
+@TableName(value ="SIS_plantlevel_overview_2")
 @Data
 public class SisPlantlevelOverview2 implements Serializable {
     /**

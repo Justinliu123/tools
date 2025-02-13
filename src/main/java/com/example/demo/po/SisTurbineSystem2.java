@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  * 
  * @TableName SIS_turbine_system
  */
-@TableName(value ="SIS_turbine_system")
+@TableName(value ="SIS_turbine_system_2")
 @Data
 public class SisTurbineSystem2 implements Serializable {
     /**

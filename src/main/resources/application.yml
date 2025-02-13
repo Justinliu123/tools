@@ -27,3 +27,7 @@ spring:
       connection-test-query: select 1
       connection-timeout: 30000
       pool-name: hikariCP
+  redis:
+    host: 172.16.24.111
+    port: 6379
+    password: 123456
