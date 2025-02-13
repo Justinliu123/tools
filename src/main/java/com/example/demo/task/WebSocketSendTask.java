@@ -42,6 +42,8 @@ public class WebSocketSendTask {
             // 发送厂级总览数据
             JSONArray jsonArray = makeChart1Data(sisPlantlevelOverview, sisPlantlevelOverview2);
             WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART1, JSONObject.toJSONString(jsonArray));
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_PLANTLEVEL_OVERVIEW);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_PLANTLEVEL_OVERVIEW_2);
         }
         // 检查是否需要推送表二数据
         if(WebSocketUsers.hasChartSession(ChartNumConstants.CHART2) &&
@@ -55,6 +57,8 @@ public class WebSocketSendTask {
             // 发送SIS系统数据分析数据
             JSONArray jsonArray2 = makeChart2Data(sisTurbineSystem, sisTurbineSystem2);
             WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART2, JSONObject.toJSONString(jsonArray2));
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_TURBINE_SYSTEM);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_TURBINE_SYSTEM_2);
         }
         // 检查是否需要推送表三数据
         if(WebSocketUsers.hasChartSession(ChartNumConstants.CHART3) &&
@@ -68,6 +72,8 @@ public class WebSocketSendTask {
             // 发送升压站数据
             JSONArray jsonArray3 = makeChart3Data(sisUpgradeVoltageTransformerData, sisUpgradeVoltageTransformerData2);
             WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART3, JSONObject.toJSONString(jsonArray3));
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_UPGRADE_VOLTAGE_TRANSFORMER_DATA);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_UPGRADE_VOLTAGE_TRANSFORMER_DATA_2);
         }
         // 检查是否需要推送表四数据
         if(WebSocketUsers.hasChartSession(ChartNumConstants.CHART4) &&
@@ -76,11 +82,13 @@ public class WebSocketSendTask {
             Object cacheObject = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_BOILER_MONITORING);
             DcsBoilerMonitoring dcsBoilerMonitoring = (DcsBoilerMonitoring) cacheObject;
             Object cacheObject2 = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_BOILER_MONITORING_2);
-            DcsBoilerMonitoring dcsBoilerMonitoring2 = (DcsBoilerMonitoring) cacheObject2;
+            DcsBoilerMonitoring2 dcsBoilerMonitoring2 = (DcsBoilerMonitoring2) cacheObject2;
 
             // 发送锅炉监控数据
             JSONArray jsonArray4 = makeChart4Data(dcsBoilerMonitoring, dcsBoilerMonitoring2);
             WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART4, JSONObject.toJSONString(jsonArray4));
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_BOILER_MONITORING);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_BOILER_MONITORING_2);
         }
         // 检查是否需要推送表五数据
         if(WebSocketUsers.hasChartSession(ChartNumConstants.CHART5) &&
@@ -89,11 +97,13 @@ public class WebSocketSendTask {
             Object cacheObject = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_TURBINE_DATA);
             DcsTurbineData dcsTurbineData = (DcsTurbineData) cacheObject;
             Object cacheObject2 = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_TURBINE_DATA_2);
-            DcsTurbineData dcsTurbineData2 = (DcsTurbineData) cacheObject2;
+            DcsTurbineData2 dcsTurbineData2 = (DcsTurbineData2) cacheObject2;
 
             // 发送汽轮机数据
             JSONArray jsonArray5 = makeChart5Data(dcsTurbineData, dcsTurbineData2);
             WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART5, JSONObject.toJSONString(jsonArray5));
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_TURBINE_DATA);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_TURBINE_DATA_2);
         }
         // 检查是否需要推送表六数据
         if((WebSocketUsers.hasChartSession(ChartNumConstants.CHART6) || WebSocketUsers.hasChartSession(ChartNumConstants.CHART7)) &&
@@ -102,7 +112,7 @@ public class WebSocketSendTask {
             Object cacheObject = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_MONITORING_OF_AUXILIARY_TURBINES);
             DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines = (DcsMonitoringOfAuxiliaryTurbines) cacheObject;
             Object cacheObject2 = redisTemplateUtil.getCacheObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_MONITORING_OF_AUXILIARY_TURBINES_2);
-            DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines2 = (DcsMonitoringOfAuxiliaryTurbines) cacheObject2;
+            DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2 = (DcsMonitoringOfAuxiliaryTurbines2) cacheObject2;
             if(WebSocketUsers.hasChartSession(ChartNumConstants.CHART6)) {
                 JSONArray jsonArray6 = makeChart6Data(dcsMonitoringOfAuxiliaryTurbines, dcsMonitoringOfAuxiliaryTurbines2);
                 WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART6, JSONObject.toJSONString(jsonArray6));
@@ -111,10 +121,12 @@ public class WebSocketSendTask {
                 JSONArray jsonArray7 = makeChart7Data(dcsMonitoringOfAuxiliaryTurbines, dcsMonitoringOfAuxiliaryTurbines2);
                 WebSocketUsers.sendMessageToUsersByText(ChartNumConstants.CHART7, JSONObject.toJSONString(jsonArray7));
             }
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_MONITORING_OF_AUXILIARY_TURBINES);
+            redisTemplateUtil.deleteObject(RedisTopicConstants.redisTopic + RedisTopicConstants.DCS_MONITORING_OF_AUXILIARY_TURBINES_2);
         }
     }
 
-    private JSONArray makeChart7Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines2) {
+    private JSONArray makeChart7Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
         JSONArray jsonArray = new JSONArray();
         // 机组SCR反应器2A脱烃后烟气N0x含量
         JSONObject jsonObject = new JSONObject();
@@ -158,7 +170,7 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart6Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines2) {
+    private JSONArray makeChart6Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
         // 两个表格，需要嵌套数组
         JSONArray outArray = new JSONArray();
         JSONArray jsonArray1 = new JSONArray();
@@ -232,7 +244,7 @@ public class WebSocketSendTask {
         return outArray;
     }
 
-    private JSONArray makeChart5Data(DcsTurbineData dcsTurbineData, DcsTurbineData dcsTurbineData2) {
+    private JSONArray makeChart5Data(DcsTurbineData dcsTurbineData, DcsTurbineData2 dcsTurbineData2) {
         JSONArray jsonArray = new JSONArray();
         // 汽轮机效率
         JSONObject jsonObject = new JSONObject();
@@ -337,7 +349,7 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart4Data(DcsBoilerMonitoring dcsBoilerMonitoring, DcsBoilerMonitoring dcsBoilerMonitoring2) {
+    private JSONArray makeChart4Data(DcsBoilerMonitoring dcsBoilerMonitoring, DcsBoilerMonitoring2 dcsBoilerMonitoring2) {
         JSONArray jsonArray = new JSONArray();
         // 锅炉出口温度
         JSONObject jsonObject = new JSONObject();
