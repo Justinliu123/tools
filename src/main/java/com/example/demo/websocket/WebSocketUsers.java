@@ -6,10 +6,9 @@ import org.slf4j.LoggerFactory;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * websocket 客户端用户集
@@ -17,6 +16,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author ruoyi
  */
 public class WebSocketUsers {
+    static class ChartNumUser {
+        private String key;
+        private Session session;
+        private String getKey() {
+            return key;
+        }
+        private Session getSession() {
+            return session;
+        }
+        ChartNumUser(String key, Session session) {
+            this.key = key;
+            this.session = session;
+        }
+    }
     /**
      * WebSocketUsers 日志控制器
      */
@@ -25,7 +38,10 @@ public class WebSocketUsers {
     /**
      * 用户集
      */
-    private static Map<String, Session> USERS = new ConcurrentHashMap<String, Session>();
+    private static Map<String, ChartNumUser> USERS = new ConcurrentHashMap<>();
+
+    // 用户通过CharNum分类的记录
+    private static Map<String, List<Session>> ChartNumSessionsMap = new ConcurrentHashMap<>();
 
     /**
      * 存储用户
@@ -33,32 +49,11 @@ public class WebSocketUsers {
      * @param key     唯一键
      * @param session 用户信息
      */
-    public static void put(String key, Session session) {
-        USERS.put(key, session);
-    }
-
-    /**
-     * 移除用户
-     *
-     * @param session 用户信息
-     * @return 移除结果
-     */
-    public static boolean remove(Session session) {
-        String key = null;
-        boolean flag = USERS.containsValue(session);
-        if (flag) {
-            Set<Map.Entry<String, Session>> entries = USERS.entrySet();
-            for (Map.Entry<String, Session> entry : entries) {
-                Session value = entry.getValue();
-                if (value.equals(session)) {
-                    key = entry.getKey();
-                    break;
-                }
-            }
-        } else {
-            return true;
-        }
-        return remove(key);
+    public static void put(String key, String chartNum, Session session) {
+        USERS.put(key, new ChartNumUser(chartNum, session));
+        List<Session> orDefault = ChartNumSessionsMap.getOrDefault(chartNum, new ArrayList<>());
+        orDefault.add(session);
+        ChartNumSessionsMap.put(chartNum, orDefault);
     }
 
     /**
@@ -67,9 +62,10 @@ public class WebSocketUsers {
      * @param key 键
      */
     public static boolean remove(String key) {
-        Session remove = USERS.remove(key);
+        ChartNumUser remove = USERS.remove(key);
         if (remove != null) {
-            return USERS.containsValue(remove);
+            ChartNumSessionsMap.get(remove.getKey()).remove(remove.getSession());
+            return !USERS.containsValue(remove);
         } else {
             return true;
         }
@@ -80,8 +76,12 @@ public class WebSocketUsers {
      *
      * @return 返回用户集合
      */
-    public static Map<String, Session> getUsers() {
+    public static Map<String, ChartNumUser> getUsers() {
         return USERS;
+    }
+    
+    public static boolean hasChartSession(String chartNum) {
+        return ChartNumSessionsMap.get(chartNum) != null && !ChartNumSessionsMap.get(chartNum).isEmpty();
     }
 
     /**
@@ -89,10 +89,12 @@ public class WebSocketUsers {
      *
      * @param message 消息内容
      */
-    public static void sendMessageToUsersByText(String message) {
-        Collection<Session> values = USERS.values();
+    public static void sendMessageToUsersByText(String ChartNum, String message) {
+        Collection<Session> values = ChartNumSessionsMap.get(ChartNum);
         for (Session value : values) {
-            sendMessageToUserByText(value, message);
+            if(value.isOpen()) {
+                sendMessageToUserByText(value, message);
+            }
         }
     }
 
@@ -136,7 +138,7 @@ public class WebSocketUsers {
      * @param obj obj
      */
     public static void sendObjectToClients(Object obj) {
-        Collection<Session> sessions = USERS.values();
+        Collection<Session> sessions = USERS.values().stream().map(ChartNumUser::getSession).collect(Collectors.toList());
         for (Session session : sessions) {
             try {
                 session.getBasicRemote().sendObject(obj);

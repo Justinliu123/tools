@@ -20,8 +20,8 @@ import java.util.concurrent.Semaphore;
  *
  * @author ruoyi
  */
-//@Component
-@ServerEndpoint(value = "/websocket/message/{token}/{systemIp}/{seamIp}", encoders = {ServerEncoder.class})
+@Component
+@ServerEndpoint(value = "/websocket/message/{chartNum}", encoders = {ServerEncoder.class})
 public class WebSocketServer {
     @PostConstruct
     public void init() {
@@ -35,7 +35,7 @@ public class WebSocketServer {
     /**
      * 默认最多允许同时在线客户端
      */
-    public static int socketMaxOnlineCount = 10;
+    public static int socketMaxOnlineCount = 999;
 
     private static Semaphore socketSemaphore = new Semaphore(socketMaxOnlineCount);
 
@@ -43,8 +43,8 @@ public class WebSocketServer {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("token") String token, @PathParam("systemIp") String systemIp, @PathParam("seamIp") String seamIp) throws Exception {
-        System.out.println(String.format("%s, %s, %s", token, systemIp, seamIp));
+    public void onOpen(Session session, @PathParam("chartNum") String chartNum) throws Exception {
+        System.out.println(String.format("%s", chartNum));
         boolean semaphoreFlag = false;
         // 尝试获取信号量
         semaphoreFlag = SemaphoreUtils.tryAcquire(socketSemaphore);
@@ -55,9 +55,9 @@ public class WebSocketServer {
             session.close();
         } else {
             // 添加用户
-            WebSocketUsers.put(session.getId(), session);
-            LOGGER.info("token为 {} 的建立连接 {}, 建立连接时间 {}, 当前客户端数 {}",
-                    token,
+            WebSocketUsers.put(session.getId(), chartNum, session);
+            LOGGER.info("chartNum为 {} 的建立连接 {}, 建立连接时间 {}, 当前客户端数 {}",
+                    chartNum,
                     session.getId(),
                     DateTime.now().toString("yyyy-MM-dd HH:mm:ss"),
                     WebSocketUsers.getUsers().size());
