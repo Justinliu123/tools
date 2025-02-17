@@ -76,4 +76,24 @@ public class DcsTurbineData implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public void setEmptyFieldsToZero() {
+        this.steamTurbineEfficiency = setToZeroIfEmpty(this.steamTurbineEfficiency);
+        this.generatorDAxisReactance = setToZeroIfEmpty(this.generatorDAxisReactance);
+        this.generatorQAxisReactance = setToZeroIfEmpty(this.generatorQAxisReactance);
+        this.generatorResistance = setToZeroIfEmpty(this.generatorResistance);
+        this.generatorDampingCoefficient = setToZeroIfEmpty(this.generatorDampingCoefficient);
+        this.generatorMomentOfInertia = setToZeroIfEmpty(this.generatorMomentOfInertia);
+        this.generatorDAxisReferenceVoltage = setToZeroIfEmpty(this.generatorDAxisReferenceVoltage);
+        this.generatorQAxisReferenceVoltage = setToZeroIfEmpty(this.generatorQAxisReferenceVoltage);
+        this.steamTurbineStressValue = setToZeroIfEmpty(this.steamTurbineStressValue);
+        this.steamTurbineInletSteamTemperature = setToZeroIfEmpty(this.steamTurbineInletSteamTemperature);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
 }

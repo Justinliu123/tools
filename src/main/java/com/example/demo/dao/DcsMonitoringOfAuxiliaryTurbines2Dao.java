@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.po.DcsBoilerMonitoring;
 import com.example.demo.po.DcsMonitoringOfAuxiliaryTurbines;
 import com.example.demo.po.DcsMonitoringOfAuxiliaryTurbines2;
 
@@ -10,5 +11,6 @@ import com.example.demo.po.DcsMonitoringOfAuxiliaryTurbines2;
 * @createDate 2025-02-12 14:05:42
 */
 public interface DcsMonitoringOfAuxiliaryTurbines2Dao extends IService<DcsMonitoringOfAuxiliaryTurbines2> {
+    DcsMonitoringOfAuxiliaryTurbines2 getLastData();
 
 }

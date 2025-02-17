@@ -46,4 +46,18 @@ public class SisTurbineSystem implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public void setEmptyFieldsToZero() {
+        this.pressureControllerGroupChargingPressure = setToZeroIfEmpty(this.pressureControllerGroupChargingPressure);
+        this.unitLoadIncreaseRate = setToZeroIfEmpty(this.unitLoadIncreaseRate);
+        this.unitLoadDecreaseRate = setToZeroIfEmpty(this.unitLoadDecreaseRate);
+        this.operatingRegulatorStatusValue = setToZeroIfEmpty(this.operatingRegulatorStatusValue);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
 }

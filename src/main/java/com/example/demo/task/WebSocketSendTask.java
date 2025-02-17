@@ -8,6 +8,7 @@ import com.example.demo.constant.RedisTopicConstants;
 import com.example.demo.dto.UserDto;
 import com.example.demo.po.*;
 import com.example.demo.util.RedisTemplateUtil;
+import com.example.demo.util.StringDouble2webUtil;
 import com.example.demo.websocket.WebSocketUsers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,8 @@ import java.text.DecimalFormat;
 public class WebSocketSendTask {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
-    // 创建 DecimalFormat 实例并设置百分比格式
-    private DecimalFormat decimalFormat = new DecimalFormat("#.##%");
     @Scheduled(cron = "0/3 * * * * ?")
     public void sendMessage(){
-        log.info("开始发送数据");
         // 检查是否需要推送表一数据
         if (WebSocketUsers.hasChartSession(ChartNumConstants.CHART1) &&
                 redisTemplateUtil.hasKey(RedisTopicConstants.redisTopic + RedisTopicConstants.SIS_PLANTLEVEL_OVERVIEW) &&
@@ -126,7 +124,10 @@ public class WebSocketSendTask {
         }
     }
 
-    private JSONArray makeChart7Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
+    public static JSONArray makeChart7Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
+        // 设置每个字段空值
+        dcsMonitoringOfAuxiliaryTurbines.setEmptyFieldsToZero();
+        dcsMonitoringOfAuxiliaryTurbines2.setEmptyFieldsToZero();
         JSONArray jsonArray = new JSONArray();
         // 机组SCR反应器2A脱烃后烟气N0x含量
         JSONObject jsonObject = new JSONObject();
@@ -170,7 +171,10 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart6Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
+    public static JSONArray makeChart6Data(DcsMonitoringOfAuxiliaryTurbines dcsMonitoringOfAuxiliaryTurbines, DcsMonitoringOfAuxiliaryTurbines2 dcsMonitoringOfAuxiliaryTurbines2) {
+        dcsMonitoringOfAuxiliaryTurbines.setEmptyFieldsToZero();
+        dcsMonitoringOfAuxiliaryTurbines2.setEmptyFieldsToZero();
+
         // 两个表格，需要嵌套数组
         JSONArray outArray = new JSONArray();
         JSONArray jsonArray1 = new JSONArray();
@@ -179,12 +183,12 @@ public class WebSocketSendTask {
         // 构造表1
         // 泵效率
         JSONObject jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue = new BigDecimal(dcsMonitoringOfAuxiliaryTurbines.getPumpEfficiency());
-        BigDecimal bigDecimalValue_2 = new BigDecimal(dcsMonitoringOfAuxiliaryTurbines2.getPumpEfficiency());
+        BigDecimal bigDecimalValue = null;
+        BigDecimal bigDecimalValue_2 = null;
         jsonObject.fluentPut("num", "1")
                 .fluentPut("name", "泵效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(dcsMonitoringOfAuxiliaryTurbines.getPumpEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(dcsMonitoringOfAuxiliaryTurbines2.getPumpEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray1.add(jsonObject);
         // 泵入口压力
@@ -244,16 +248,19 @@ public class WebSocketSendTask {
         return outArray;
     }
 
-    private JSONArray makeChart5Data(DcsTurbineData dcsTurbineData, DcsTurbineData2 dcsTurbineData2) {
+    public static JSONArray makeChart5Data(DcsTurbineData dcsTurbineData, DcsTurbineData2 dcsTurbineData2) {
+        dcsTurbineData.setEmptyFieldsToZero();
+        dcsTurbineData2.setEmptyFieldsToZero();
+
         JSONArray jsonArray = new JSONArray();
         // 汽轮机效率
         JSONObject jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue = new BigDecimal(dcsTurbineData.getSteamTurbineEfficiency());
-        BigDecimal bigDecimalValue_2 = new BigDecimal(dcsTurbineData2.getSteamTurbineEfficiency());
+        BigDecimal bigDecimalValue = null;
+        BigDecimal bigDecimalValue_2 = null;
         jsonObject.fluentPut("num", "1")
                 .fluentPut("name", "汽轮机效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(dcsTurbineData.getSteamTurbineEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(dcsTurbineData2.getSteamTurbineEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
         // 发电机d轴电抗
@@ -349,7 +356,10 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart4Data(DcsBoilerMonitoring dcsBoilerMonitoring, DcsBoilerMonitoring2 dcsBoilerMonitoring2) {
+    public static JSONArray makeChart4Data(DcsBoilerMonitoring dcsBoilerMonitoring, DcsBoilerMonitoring2 dcsBoilerMonitoring2) {
+        dcsBoilerMonitoring.setEmptyFieldsToZero();
+        dcsBoilerMonitoring2.setEmptyFieldsToZero();
+
         JSONArray jsonArray = new JSONArray();
         // 锅炉出口温度
         JSONObject jsonObject = new JSONObject();
@@ -444,7 +454,10 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart3Data(SisUpgradeVoltageTransformerData sisUpgradeVoltageTransformerData, SisUpgradeVoltageTransformerData2 sisUpgradeVoltageTransformerData2) {
+    public static JSONArray makeChart3Data(SisUpgradeVoltageTransformerData sisUpgradeVoltageTransformerData, SisUpgradeVoltageTransformerData2 sisUpgradeVoltageTransformerData2) {
+        // 设置每个为空的字段为0
+        sisUpgradeVoltageTransformerData.setEmptyFieldsToZero();
+        sisUpgradeVoltageTransformerData2.setEmptyFieldsToZero();
         JSONArray jsonArray = new JSONArray();
 
         // 升压变压器入口电压
@@ -560,12 +573,10 @@ public class WebSocketSendTask {
         jsonArray.add(jsonObject);
         // 输电线输送效率
         jsonObject = new JSONObject();
-        bigDecimalValue = new BigDecimal(sisUpgradeVoltageTransformerData.getTransmissionLineEfficiency());
-        bigDecimalValue_2 = new BigDecimal(sisUpgradeVoltageTransformerData2.getTransmissionLineEfficiency());
         jsonObject.fluentPut("num", "12")
                 .fluentPut("name", "输电线输送效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(sisUpgradeVoltageTransformerData.getTransmissionLineEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(sisUpgradeVoltageTransformerData2.getTransmissionLineEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
         // 输电线连线状态
@@ -610,18 +621,18 @@ public class WebSocketSendTask {
         jsonArray.add(jsonObject);
         // 网络连接点功率平衡状态
         jsonObject = new JSONObject();
-        bigDecimalValue = new BigDecimal(sisUpgradeVoltageTransformerData.getPowerAtNetworkConnectionPoints());
-        bigDecimalValue_2 = new BigDecimal(sisUpgradeVoltageTransformerData2.getPowerAtNetworkConnectionPoints());
         jsonObject.fluentPut("num", "17")
                 .fluentPut("name", "网络连接点功率平衡状态")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(sisUpgradeVoltageTransformerData.getPowerAtNetworkConnectionPoints()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(sisUpgradeVoltageTransformerData2.getPowerAtNetworkConnectionPoints()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
         return jsonArray;
     }
 
-    private JSONArray makeChart2Data(SisTurbineSystem sisTurbineSystem, SisTurbineSystem2 sisTurbineSystem2) {
+    public static JSONArray makeChart2Data(SisTurbineSystem sisTurbineSystem, SisTurbineSystem2 sisTurbineSystem2) {
+        sisTurbineSystem.setEmptyFieldsToZero();
+        sisTurbineSystem2.setEmptyFieldsToZero();
         JSONArray jsonArray = new JSONArray();
         // 压力控制器团充注压力
         JSONObject jsonObject = new JSONObject();
@@ -670,7 +681,9 @@ public class WebSocketSendTask {
         return jsonArray;
     }
 
-    private JSONArray makeChart1Data(SisPlantlevelOverview sisPlantlevelOverview, SisPlantlevelOverview2 sisPlantlevelOverview2) {
+    public static JSONArray makeChart1Data(SisPlantlevelOverview sisPlantlevelOverview, SisPlantlevelOverview2 sisPlantlevelOverview2) {
+        sisPlantlevelOverview.setEmptyFieldsToZero();
+        sisPlantlevelOverview2.setEmptyFieldsToZero();
         JSONArray jsonArray = new JSONArray();
         // 构造负荷
         JSONObject jsonObject = new JSONObject();
@@ -718,12 +731,10 @@ public class WebSocketSendTask {
 
         // 构造锅炉效率
         jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue5 = new BigDecimal(sisPlantlevelOverview.getBoilerEfficiency());
-        BigDecimal bigDecimalValue5_2 = new BigDecimal(sisPlantlevelOverview2.getBoilerEfficiency());
         jsonObject.fluentPut("num", "5")
                 .fluentPut("name", "锅炉效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue5))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue5_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview.getBoilerEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview2.getBoilerEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
 
@@ -751,23 +762,19 @@ public class WebSocketSendTask {
 
         // 汽机效率
         jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue8 = new BigDecimal(sisPlantlevelOverview.getSteamTurbineEfficiency());
-        BigDecimal bigDecimalValue8_2 = new BigDecimal(sisPlantlevelOverview2.getSteamTurbineEfficiency());
         jsonObject.fluentPut("num", "8")
                 .fluentPut("name", "汽机效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue8))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue8_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview.getSteamTurbineEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview2.getSteamTurbineEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
 
         // 机组效率
         jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue9 = new BigDecimal(sisPlantlevelOverview.getGeneratingUnitEfficiency());
-        BigDecimal bigDecimalValue9_2 = new BigDecimal(sisPlantlevelOverview2.getGeneratingUnitEfficiency());
         jsonObject.fluentPut("num", "9")
                 .fluentPut("name", "机组效率")
-                .fluentPut("1set", decimalFormat.format(bigDecimalValue9))
-                .fluentPut("2set", decimalFormat.format(bigDecimalValue9_2))
+                .fluentPut("1set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview.getGeneratingUnitEfficiency()))
+                .fluentPut("2set", StringDouble2webUtil.getPercentage(sisPlantlevelOverview2.getGeneratingUnitEfficiency()))
                 .fluentPut("unit", "%");
         jsonArray.add(jsonObject);
         return jsonArray;

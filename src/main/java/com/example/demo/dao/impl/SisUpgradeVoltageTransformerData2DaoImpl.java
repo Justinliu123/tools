@@ -1,5 +1,6 @@
 package com.example.demo.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dao.SisUpgradeVoltageTransformerData2Dao;
 import com.example.demo.dao.SisUpgradeVoltageTransformerDataDao;
@@ -17,7 +18,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SisUpgradeVoltageTransformerData2DaoImpl extends ServiceImpl<SisUpgradeVoltageTransformerData2Mapper, SisUpgradeVoltageTransformerData2>
     implements SisUpgradeVoltageTransformerData2Dao {
-
+    @Override
+    public SisUpgradeVoltageTransformerData2 getLastData() {
+        SisUpgradeVoltageTransformerData2 sisUpgradeVoltageTransformerData = baseMapper.selectOne(Wrappers.<SisUpgradeVoltageTransformerData2>lambdaQuery()
+                .orderByDesc(SisUpgradeVoltageTransformerData2::getInsertTime).last("limit 1"));
+        return sisUpgradeVoltageTransformerData;
+    }
 }
 
 

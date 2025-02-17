@@ -1,5 +1,6 @@
 package com.example.demo.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dao.DcsBoilerMonitoring2Dao;
 import com.example.demo.dao.DcsBoilerMonitoringDao;
@@ -7,6 +8,7 @@ import com.example.demo.mapper.DcsBoilerMonitoring2Mapper;
 import com.example.demo.mapper.DcsBoilerMonitoringMapper;
 import com.example.demo.po.DcsBoilerMonitoring;
 import com.example.demo.po.DcsBoilerMonitoring2;
+import com.example.demo.po.SisUpgradeVoltageTransformerData;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DcsBoilerMonitoring2DaoImpl extends ServiceImpl<DcsBoilerMonitoring2Mapper, DcsBoilerMonitoring2>
     implements DcsBoilerMonitoring2Dao {
-
+    @Override
+    public DcsBoilerMonitoring2 getLastData() {
+        DcsBoilerMonitoring2 dcsBoilerMonitoring2 = baseMapper.selectOne(Wrappers.<DcsBoilerMonitoring2>lambdaQuery()
+                .orderByDesc(DcsBoilerMonitoring2::getInsertTime).last("limit 1"));
+        return dcsBoilerMonitoring2;
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.po.SisTurbineSystem;
 import com.example.demo.po.SisUpgradeVoltageTransformerData;
 import com.example.demo.po.SisUpgradeVoltageTransformerData2;
 
@@ -10,5 +11,6 @@ import com.example.demo.po.SisUpgradeVoltageTransformerData2;
 * @createDate 2025-02-12 14:05:42
 */
 public interface SisUpgradeVoltageTransformerData2Dao extends IService<SisUpgradeVoltageTransformerData2> {
+    SisUpgradeVoltageTransformerData2 getLastData();
 
 }

@@ -1,10 +1,12 @@
 package com.example.demo.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dao.SisTurbineSystem2Dao;
 import com.example.demo.dao.SisTurbineSystemDao;
 import com.example.demo.mapper.SisTurbineSystem2Mapper;
 import com.example.demo.mapper.SisTurbineSystemMapper;
+import com.example.demo.po.SisPlantlevelOverview;
 import com.example.demo.po.SisTurbineSystem;
 import com.example.demo.po.SisTurbineSystem2;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,12 @@ import org.springframework.stereotype.Service;
 public class SisTurbineSystem2DaoImpl extends ServiceImpl<SisTurbineSystem2Mapper, SisTurbineSystem2>
     implements SisTurbineSystem2Dao {
 
+    @Override
+    public SisTurbineSystem2 getLastData() {
+        SisTurbineSystem2 sisTurbineSystem2 = baseMapper.selectOne(Wrappers.<SisTurbineSystem2>lambdaQuery()
+                .orderByDesc(SisTurbineSystem2::getInsertTime).last("limit 1"));
+        return sisTurbineSystem2;
+    }
 }
 
 

@@ -3,6 +3,8 @@ package com.example.demo.dao;
 import com.example.demo.po.SisPlantlevelOverview;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author 33099
 * @description 针对表【SIS_plantlevel_overview】的数据库操作Service
@@ -10,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface SisPlantlevelOverviewDao extends IService<SisPlantlevelOverview> {
 
+    List<SisPlantlevelOverview> getHistoryData(Integer historyNum);
+
+    SisPlantlevelOverview getLastData();
 }

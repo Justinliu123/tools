@@ -111,4 +111,32 @@ public class SisUpgradeVoltageTransformerData implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public void setEmptyFieldsToZero() {
+        this.boostTransformerInputVoltage = setToZeroIfEmpty(this.boostTransformerInputVoltage);
+        this.boostTransformerOutputVoltage = setToZeroIfEmpty(this.boostTransformerOutputVoltage);
+        this.boostTransformerOutputCurrent = setToZeroIfEmpty(this.boostTransformerOutputCurrent);
+        this.boostTransformerOutputPower = setToZeroIfEmpty(this.boostTransformerOutputPower);
+        this.transmissionLineVoltage = setToZeroIfEmpty(this.transmissionLineVoltage);
+        this.transmissionLineCurrent = setToZeroIfEmpty(this.transmissionLineCurrent);
+        this.transmissionLinePower = setToZeroIfEmpty(this.transmissionLinePower);
+        this.stepDownTransformerInputVoltage = setToZeroIfEmpty(this.stepDownTransformerInputVoltage);
+        this.stepDownTransformerOutputVoltage = setToZeroIfEmpty(this.stepDownTransformerOutputVoltage);
+        this.stepDownTransformerOutputCurrent = setToZeroIfEmpty(this.stepDownTransformerOutputCurrent);
+        this.stepDownTransformerOutputPower = setToZeroIfEmpty(this.stepDownTransformerOutputPower);
+        this.transmissionLineEfficiency = setToZeroIfEmpty(this.transmissionLineEfficiency);
+        this.transmissionLineConnectionStatus = setToZeroIfEmpty(this.transmissionLineConnectionStatus);
+        this.transmissionLineOperatingTemperature = setToZeroIfEmpty(this.transmissionLineOperatingTemperature);
+        this.transmissionLineConnectionHealthStatus = setToZeroIfEmpty(this.transmissionLineConnectionHealthStatus);
+        this.networkOutputPowerAllocation = setToZeroIfEmpty(this.networkOutputPowerAllocation);
+        this.powerAtNetworkConnectionPoints = setToZeroIfEmpty(this.powerAtNetworkConnectionPoints);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
+
 }

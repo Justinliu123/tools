@@ -71,4 +71,23 @@ public class DcsBoilerMonitoring implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public void setEmptyFieldsToZero() {
+        this.boilerOutletTemperature = setToZeroIfEmpty(this.boilerOutletTemperature);
+        this.boilerOutletPressure = setToZeroIfEmpty(this.boilerOutletPressure);
+        this.enthalpyAtBoilerOutlet = setToZeroIfEmpty(this.enthalpyAtBoilerOutlet);
+        this.theRightSideOfTheBoiler = setToZeroIfEmpty(this.theRightSideOfTheBoiler);
+        this.theLeftSideOfTheBoiler = setToZeroIfEmpty(this.theLeftSideOfTheBoiler);
+        this.waterLevelInBoilerStorageTank = setToZeroIfEmpty(this.waterLevelInBoilerStorageTank);
+        this.airFlowRateAtBoilerInlet = setToZeroIfEmpty(this.airFlowRateAtBoilerInlet);
+        this.airPressureAtBoilerInlet = setToZeroIfEmpty(this.airPressureAtBoilerInlet);
+        this.averageOxygenContentBoilerCombustion = setToZeroIfEmpty(this.averageOxygenContentBoilerCombustion);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
 }

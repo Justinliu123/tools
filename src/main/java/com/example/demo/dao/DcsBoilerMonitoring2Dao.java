@@ -3,6 +3,7 @@ package com.example.demo.dao;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.po.DcsBoilerMonitoring;
 import com.example.demo.po.DcsBoilerMonitoring2;
+import com.example.demo.po.SisUpgradeVoltageTransformerData;
 
 /**
 * @author 33099
@@ -10,5 +11,6 @@ import com.example.demo.po.DcsBoilerMonitoring2;
 * @createDate 2025-02-12 14:05:42
 */
 public interface DcsBoilerMonitoring2Dao extends IService<DcsBoilerMonitoring2> {
+    DcsBoilerMonitoring2 getLastData();
 
 }

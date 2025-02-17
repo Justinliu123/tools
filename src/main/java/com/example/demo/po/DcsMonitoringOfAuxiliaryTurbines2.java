@@ -74,4 +74,24 @@ public class DcsMonitoringOfAuxiliaryTurbines2 implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public void setEmptyFieldsToZero() {
+        this.pumpEfficiency = setToZeroIfEmpty(this.pumpEfficiency);
+        this.pumpInletPressure = setToZeroIfEmpty(this.pumpInletPressure);
+        this.pumpOutletPressure = setToZeroIfEmpty(this.pumpOutletPressure);
+        this.noxConcentrationInFlueGas = setToZeroIfEmpty(this.noxConcentrationInFlueGas);
+        this.o2ConcentrationInFlueGas = setToZeroIfEmpty(this.o2ConcentrationInFlueGas);
+        this.nh3ConcentrationInFlueGas = setToZeroIfEmpty(this.nh3ConcentrationInFlueGas);
+        this.pressureHoldingStatusOfTheScrReactor = setToZeroIfEmpty(this.pressureHoldingStatusOfTheScrReactor);
+        this.forcedDraftFanMotorCurrent = setToZeroIfEmpty(this.forcedDraftFanMotorCurrent);
+        this.forcedDraftFanMotorPower = setToZeroIfEmpty(this.forcedDraftFanMotorPower);
+        this.forcedDraftFanAirPressure = setToZeroIfEmpty(this.forcedDraftFanAirPressure);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.po.SisPlantlevelOverview2;
 import com.example.demo.po.SisTurbineSystem2;
 
 /**
@@ -9,5 +10,5 @@ import com.example.demo.po.SisTurbineSystem2;
 * @createDate 2025-02-12 14:05:42
 */
 public interface SisTurbineSystem2Dao extends IService<SisTurbineSystem2> {
-
+    SisTurbineSystem2 getLastData();
 }

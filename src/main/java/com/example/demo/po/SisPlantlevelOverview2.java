@@ -69,4 +69,24 @@ public class SisPlantlevelOverview2 implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+
+    public void setEmptyFieldsToZero() {
+        this.loads = setToZeroIfEmpty(this.loads);
+        this.powerSupplyCoalConsumption = setToZeroIfEmpty(this.powerSupplyCoalConsumption);
+        this.coalConsumptionForPowerGeneration = setToZeroIfEmpty(this.coalConsumptionForPowerGeneration);
+        this.auxiliaryPowerRatio = setToZeroIfEmpty(this.auxiliaryPowerRatio);
+        this.boilerEfficiency = setToZeroIfEmpty(this.boilerEfficiency);
+        this.steamTurbineHeatRate = setToZeroIfEmpty(this.steamTurbineHeatRate);
+        this.steamConsumptionRate = setToZeroIfEmpty(this.steamConsumptionRate);
+        this.steamTurbineEfficiency = setToZeroIfEmpty(this.steamTurbineEfficiency);
+        this.generatingUnitEfficiency = setToZeroIfEmpty(this.generatingUnitEfficiency);
+    }
+
+    private String setToZeroIfEmpty(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return "0";
+        }
+        return value;
+    }
 }

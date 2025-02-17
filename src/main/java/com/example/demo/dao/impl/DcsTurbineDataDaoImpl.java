@@ -1,6 +1,8 @@
 package com.example.demo.dao.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.po.DcsMonitoringOfAuxiliaryTurbines;
 import com.example.demo.po.DcsTurbineData;
 import com.example.demo.dao.DcsTurbineDataDao;
 import com.example.demo.mapper.DcsTurbineDataMapper;
@@ -14,7 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DcsTurbineDataDaoImpl extends ServiceImpl<DcsTurbineDataMapper, DcsTurbineData>
     implements DcsTurbineDataDao {
-
+    @Override
+    public DcsTurbineData getLastData() {
+        DcsTurbineData dcsTurbineData = baseMapper.selectOne(Wrappers.<DcsTurbineData>lambdaQuery()
+                .orderByDesc(DcsTurbineData::getInsertTime).last("limit 1"));
+        return dcsTurbineData;
+    }
 }
 
 

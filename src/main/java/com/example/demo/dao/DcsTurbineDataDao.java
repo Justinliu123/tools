@@ -2,6 +2,7 @@ package com.example.demo.dao;
 
 import com.example.demo.po.DcsTurbineData;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.po.DcsTurbineData2;
 
 /**
 * @author 33099
@@ -9,5 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-02-12 14:05:42
 */
 public interface DcsTurbineDataDao extends IService<DcsTurbineData> {
-
+    DcsTurbineData getLastData();
 }
