@@ -26,7 +26,7 @@ import java.text.DecimalFormat;
 public class WebSocketSendTask {
     @Autowired
     private RedisTemplateUtil redisTemplateUtil;
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(cron = "0/1 * * * * ?")
     public void sendMessage(){
         // 检查是否需要推送表一数据
         if (WebSocketUsers.hasChartSession(ChartNumConstants.CHART1) &&
