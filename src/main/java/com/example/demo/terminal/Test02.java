@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 
-import static com.example.demo.terminal.Test01.uploadMedia;
-
 public class Test02 {
     public static void main(String[] args) {
         try {
