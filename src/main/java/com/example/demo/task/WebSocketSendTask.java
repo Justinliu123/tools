@@ -363,8 +363,8 @@ public class WebSocketSendTask {
         JSONArray jsonArray = new JSONArray();
         // 锅炉出口温度
         JSONObject jsonObject = new JSONObject();
-        BigDecimal bigDecimalValue = new BigDecimal(dcsBoilerMonitoring.getBoilerOutletPressure());
-        BigDecimal bigDecimalValue_2 = new BigDecimal(dcsBoilerMonitoring2.getBoilerOutletPressure());
+        BigDecimal bigDecimalValue = new BigDecimal(dcsBoilerMonitoring.getBoilerOutletTemperature());
+        BigDecimal bigDecimalValue_2 = new BigDecimal(dcsBoilerMonitoring2.getBoilerOutletTemperature());
         jsonObject.fluentPut("num", "1")
                 .fluentPut("name", "锅炉出口温度")
                 .fluentPut("1set", bigDecimalValue.setScale(2, RoundingMode.HALF_UP).toString())
