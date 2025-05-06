@@ -10,14 +10,14 @@ import cn.hutool.core.util.ZipUtil;
 import cn.hutool.http.HtmlUtil;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dto.AnnouncementDto;
+import com.example.demo.util.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -27,10 +27,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -244,4 +244,63 @@ public class KeyCountController {
             }
         }
     }
+
+    /**
+     * 将指定日期范围的zip文件解压缩
+     */
+    @GetMapping("/unZip")
+    public String unZipFilesByDateRange(@RequestParam("startDate") LocalDate startDate,
+                                        @RequestParam("endDate") LocalDate endDate,
+                                        @RequestParam(value = "addressIds", required = false) List<Integer> addressIds,
+                                        @RequestParam(value = "type", required = false) String type) {
+        String zipPath = "/data/backup/";
+        String target = "/data/temp/";
+        String excelPathStr = "/data/result/announcements_result_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx";
+        ExcelWriter excelWriter = ExcelUtil.getWriter(excelPathStr);
+        excelWriter.addHeaderAlias("announcementName", "公告名称");
+        excelWriter.addHeaderAlias("noticeUrl", "公告链接");
+        excelWriter.addHeaderAlias("publishTime", "公告发布时间");
+        excelWriter.addHeaderAlias("openTime", "开标时间");
+        excelWriter.addHeaderAlias("type", "采购类型");
+        excelWriter.addHeaderAlias("labels", "标签");
+        for (LocalDate date = startDate; date.isBefore(endDate.plusDays(1)); date = date.plusDays(1)) {
+            // announcements-backup-20250108.zip
+            String dateStr = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String unZipPathStr = target + dateStr;
+            // /electricity/announcements.csv 如果已经解压过则无需解压
+            String announcementsFilePath = unZipPathStr + "/electricity/announcements.csv";
+            if(!FileUtil.exist(announcementsFilePath)) {
+                String filePath = zipPath + "announcements-backup-" + dateStr + ".zip";
+                if(!FileUtil.exist(filePath)) {
+                    log.info("{}不存在", filePath);
+                    continue;
+                }
+                ZipUtil.unzip(filePath, unZipPathStr);
+            }
+            if(!FileUtil.exist(announcementsFilePath)) {
+                log.info("{}不存在", announcementsFilePath);
+                continue;
+            }
+            // 读取announcements.csv文件
+            CsvReader reader = CsvUtil.getReader();
+            List<AnnouncementDto> announcementDtos = reader.read(FileUtil.getReader(announcementsFilePath, StandardCharsets.UTF_8), AnnouncementDto.class);
+            // 过滤addressId 是参数addressId的 并且 labels可以匹配到label正则的、
+            List<AnnouncementDto> filterAnnouncementDtos = announcementDtos.stream().filter(announcementDto -> {
+                if(addressIds != null && !addressIds.contains(announcementDto.getAddressId())) {
+                    return false;
+                }
+                if(StringUtils.hasLength(type) && !announcementDto.getType().matches(type)) {
+                    return false;
+                }
+                return true;
+            }).collect(Collectors.toList());
+            // 将filterAnnouncementDtos写入excel excelPathStr
+            log.info("{}写入数据{}",announcementsFilePath, filterAnnouncementDtos);
+            excelWriter.setCurrentRowToEnd();
+            excelWriter.write(filterAnnouncementDtos);
+        }
+        excelWriter.close();
+        return "success";
+    }
+
 }
