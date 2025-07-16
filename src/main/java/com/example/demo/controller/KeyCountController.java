@@ -247,6 +247,7 @@ public class KeyCountController {
 
     /**
      * 将指定日期范围的zip文件解压缩
+     * 请求示例：http://172.17.24.34:5000/unZip?startDate=2023-08-28&endDate=2025-05-06&addressIds=1,2&type=%E6%9C%8D%E5%8A%A1
      */
     @GetMapping("/unZip")
     public String unZipFilesByDateRange(@RequestParam("startDate") LocalDate startDate,
@@ -255,7 +256,7 @@ public class KeyCountController {
                                         @RequestParam(value = "type", required = false) String type) {
         String zipPath = "/data/backup/";
         String target = "/data/temp/";
-        String excelPathStr = "/data/result/announcements_result_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx";
+        String excelPathStr = "/data/result/announcements_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + ".xlsx";
         ExcelWriter excelWriter = ExcelUtil.getWriter(excelPathStr);
         excelWriter.addHeaderAlias("announcementName", "公告名称");
         excelWriter.addHeaderAlias("noticeUrl", "公告链接");
@@ -275,7 +276,12 @@ public class KeyCountController {
                     log.info("{}不存在", filePath);
                     continue;
                 }
-                ZipUtil.unzip(filePath, unZipPathStr);
+                try {
+                    ZipUtil.unzip(filePath, unZipPathStr);
+                } catch (Exception e) {
+                    log.error("解压失败：" + filePath);
+                    continue;
+                }
             }
             if(!FileUtil.exist(announcementsFilePath)) {
                 log.info("{}不存在", announcementsFilePath);
